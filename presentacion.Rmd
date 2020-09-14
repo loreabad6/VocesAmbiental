@@ -1,0 +1,60 @@
+---
+title: "El rol de las tecnologías geospaciales para el mapeo y monitoreo de peligros naturales"
+subtitle: "Voces de la Ingeniería Ambiental"
+author: "Lorena Abad Crespo"
+institute: "Departamento de Geoinformática - Z_GIS, Universidad de Salzburg, Austria"
+date: "`r Sys.setlocale('LC_TIME', 'Spanish'); format(as.Date('2020-09-19'), '%d de %B, %Y')`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: center, middle
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  primary_color = '#048f75', secondary_color = '#99a8a5',
+  title_slide_text_color = '#ffffff',
+  extra_css = list(
+    ".pull-left-70" = list("float" = "left", "width" = "65.8%"),
+    ".pull-right-30" = list("float" = "right", "width" = "28.2%"),
+    ".pull-left-30" = list("float" = "left", "width" = "28.2%"),
+    ".pull-right-70" = list("float" = "right", "width" = "65.8%"),
+    # ".orange" = list("color" = "#ffa500"),
+    ".note" = list("font-size" = "0.5em", "position" = "absolute", 
+      "bottom" = "15px", "padding-right" = "4em")
+  )
+)
+```
+
+
+# Contenido
+
+---
+class: left bottom
+background-image: url(figs/geoscience_for_the_future_spa.png)
+background-position: 100% 0%
+background-size: contain
+
+
+.note[Fuente: [The Geological Society](https://www.geolsoc.org.uk/Posters)]
+
+---
+class: inverse, center, middle
+
+---
+
+class: center, middle
+
+# Gracias!
+
+Diapositivas creadas con el paquete [**xaringan**](https://github.com/yihui/xaringan) de R.
