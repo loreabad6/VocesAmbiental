@@ -18,8 +18,10 @@ peligros naturales*
 
 ### Presentación:
 
-  - Para acceder a la presentación haz [click aquí]().
-  - Para acceder al código fuente de la presentación haz [click aquí]().
+  - Para acceder a la presentación, haz [click
+    aquí](https://loreabad6.github.io/VocesAmbiental/presentacion.html).
+  - Para acceder al código fuente de la presentación, haz [click
+    aquí](https://github.com/loreabad6/VocesAmbiental/blob/master/presentacion.Rmd).
   - ¿Tienes preguntas, comentarios, dudas sobre los temas de la charla?
     Abre un [issue
     aquí](https://github.com/loreabad6/VocesAmbiental/issues).

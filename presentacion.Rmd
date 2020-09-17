@@ -22,15 +22,17 @@ options(htmltools.dir.version = FALSE)
 ```
 
 ```{r xaringan-themer, include=FALSE}
+color1 = '#278086'
+color2 = '#c3d0e3'
 library(xaringanthemer)
 style_duo_accent(
-  primary_color = '#278086', secondary_color = '#c3d0e3',
+  primary_color = color1, secondary_color = color2,
   title_slide_text_color = '#ffffff',
   header_font_google = google_font("Roboto", "400"),
   text_font_google   = google_font("Nunito", "400", "400i"),
   code_font_google   = google_font("IBM Plex Mono"), 
-  inverse_header_color = '#ffffff', inverse_text_color = "#ffffff", inverse_text_shadow = T, 
-  # link_color = "#ccedf0",
+  inverse_header_color = '#ffffff', inverse_text_color = "#ffffff", inverse_text_shadow = T, inverse_background_color = color1,
+  # link_color = "#ccedf0", 
   extra_css = list(
     ".pull-left-70" = list("float" = "left", "width" = "65.8%"),
     ".pull-right-30" = list("float" = "right", "width" = "28.2%"),
@@ -40,7 +42,7 @@ style_duo_accent(
     ".pull-right-20" = list("float" = "right", "width" = "18.8%"),
     ".pull-left-20" = list("float" = "left", "width" = "18.8%"),
     ".pull-right-80" = list("float" = "right", "width" = "77%"),
-    # ".orange" = list("color" = "#ffa500"),
+    # ".inverse_link_color" = list("color" = "#defbff"),
     ".note" = list("font-size" = "0.5em", "position" = "absolute", 
       "bottom" = "15px", "padding-right" = "4em"),
     ".logo-left" = list("top" = "2%", "left" = "2%", "position" = "absolute", "width" = "200px"),
@@ -54,15 +56,79 @@ style_duo_accent(
 )
 ```
 
+---
 
-# Contenido
+```{r deathrate, echo = F, message = F, warning = F, fig.cap = "Índice de mortalidad anual (por cada 100 mil habitantes) por década a causa de catastrofes naturales, 1900'2015"}
+library(tidyr)
+library(dplyr)
+disasters = tibble(
+  decade = seq(1900, 2010, 10),
+  `Sequías` = c(7.65,0.47,24.2,0,14.58,0,4.54,0.29,1.15,0.01,0,0.05),
+  `Terremotos` = c(1.02,0.35,2.81,1.08,0.68,0.08,0.16,1.08,0.12,0.18,0.7,0.61),
+  `Temperaturas Extremas` = c(0,0,0,0.01,0,0.01,0,0,0.01,0.02,0.14,0.16),
+  `Inundaciones` = c(0,0.56,0.02,19.85,0.43,7.46,0.1,0.13,0.11,0.17,0.08,0.08),
+  `Deslizamientos` = c(0,0,0,0,0.07,0.01,0.02,0.02,0.01,0.01,0.01,0.02),
+  `Tormentas` = c(0.11,0.33,0.61,0.43,0.54,0.11,0.4,0.88,0.1,0.37,0.26,0.04),
+  `Actividad Volcánica` = c(0.26,0.04,0.03,0.01,0.01,0.02,0.01,0,0.05,0,0,0)
+) %>% pivot_longer(-decade, names_to = "hazard", values_to = "death_rate") 
 
-1. Conceptos clave
-2. 
+library(ggplot2)
+library(gganimate)
+g = ggplot(disasters, aes(y = death_rate, x = hazard)) +
+  geom_col(aes(fill = hazard), show.legend = F) +
+  # scale_y_continuous(breaks = 1:7, labels = unique(disasters$hazard)) +
+  transition_manual(decade) +
+  scico::scale_fill_scico_d() + 
+  coord_flip() +
+  # view_follow(fixed_x = T) +
+  # scale_y_log10() +
+  # facet_wrap(~decade) +
+  labs(
+    title = "Índice de mortalidad anual por peligors naturales, 1900-2015",
+    subtitle = 'Década: {current_frame}', 
+    caption = "Gráfico modificado de ourworldindata.org. Fuente: EMDAT (2017) OFDA/CRED International Disaster Database.",
+    x = '', y = 'Índice de mortalidad (c/100 mil hab.)') +
+  theme_xaringan()
+```
 
+```{r, echo = F, fig.align = 'center', fig.width = 15, fig.height = 8, warning= F, message = F}
+g
+```
 
 ---
-class: inverse left bottom
+class: center
+
+.pull-left[
+## Peligros naturales
+
+.left[
+- Fenómenos naturales
+- Eventos inesperados y/o incontrolables
+- Con efectos *negativos* para el **medio ambiente**
+
+.note[Fuente y más info: [nonaturaldisasters.com](https://www.nonaturaldisasters.com/), Infografía: <a href='https://www.freepik.com/vectors/map'>Map vector created by macrovector - www.freepik.com</a>]
+]
+
+![:scale 50%](figs/nathaz.png)
+]
+
+.pull-right[
+## Desastres
+
+.left[
+- Disrupción del funcionamiento de una comunidad o sociedad
+- Causas: eventos peligrosos + exposición + vulnerabilidad
+- Mal llamados "desastres naturales"
+]
+
+[![:scale 30%](figs/nonatdis.jpg)](https://www.nonaturaldisasters.com/)
+]
+
+
+**"Los peligros naturales son inevitables, el impacto que tienen en la sociedad no lo es."**
+
+---
+class: left bottom
 background-image: url(figs/geoscience_for_the_future_spa.png)
 background-position: 100% 0%
 background-size: contain
@@ -233,10 +299,14 @@ background-size: cover
 
 class: center, middle
 
-# Gracias!
+# Gracias por su atención.
 
 ¿Preguntas? 
 
-Contacto: [**lorenacristina.abadcrespo@sbg.ac.at**](mailto:lorenacristina.abadcrespo@sbg.ac.at)
+Contacto: 
 
-Diapositivas creadas con el paquete [**xaringan**](https://github.com/yihui/xaringan) de R.
+`r anicon::faa("envelope", color = color2, animate="wrench", anitype="parent-hover",rtext = "    [**lorenacristina.abadcrespo@sbg.ac.at**](mailto:lorenacristina.abadcrespo@sbg.ac.at)")`
+
+`r anicon::faa("twitter", color = color2, animate="wrench", anitype="parent-hover",rtext = "    [**@loreabad6**](https://twitter.com/loreabad6)") `
+
+.left[.footnote[Diapositivas creadas con los paquetes [**xaringan**](https://github.com/yihui/xaringan) y [**xaringanthemer**](https://github.com/gadenbuie/xaringanthemer) de R.]]
