@@ -369,7 +369,7 @@ Para participar sigan los pasos [**aquí**](http://citizenmorph.sbg.ac.at/mitmac
 
 ---
 class: inverse, left, top
-background-image: url(figs/at_scree.JPG)
+background-image: url(figs/at_scree.jpg)
 background-size: cover
 
 .logo-right[[![](figs/MontEO.png)](https://monteo.zgis.at/)]
@@ -438,7 +438,7 @@ Monitoreo de eventos extremos y su interacción con sistemas hídricos
 
 ---
 class: inverse, right, top
-background-image: url(figs/nz_earthflow.jpg)
+background-image: url(figs/nz_earthflow.JPG)
 background-size: cover
 
 ## [STEC](https://www.landcareresearch.co.nz/discover-our-research/land/erosion-and-sediment/smarter-targeting-of-erosion-control/)
