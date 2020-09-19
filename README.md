@@ -9,7 +9,7 @@ Ambiental](https://www.metallura.org/).
 
 ### Título de la charla:
 
-*El rol de las tecnologías geospaciales para el mapeo y monitoreo de
+*El rol de las tecnologías geoespaciales para el mapeo y monitoreo de
 peligros naturales*
 
 ### Fecha:

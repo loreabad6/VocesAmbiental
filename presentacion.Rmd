@@ -1,5 +1,5 @@
 ---
-title: "El rol de las tecnologías geospaciales para el mapeo y monitoreo de peligros naturales"
+title: "El rol de las tecnologías geoespaciales para el mapeo y monitoreo de peligros naturales"
 subtitle: "Voces de la Ingeniería Ambiental"
 author: "Lorena Abad Crespo"
 institute: "Departamento de Geoinformática - Z_GIS, Universidad de Salzburg, Austria"
