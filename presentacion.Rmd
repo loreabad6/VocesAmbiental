@@ -27,12 +27,14 @@ color2 = '#c3d0e3'
 library(xaringanthemer)
 style_duo_accent(
   primary_color = color1, secondary_color = color2,
-  title_slide_text_color = '#ffffff',
+  title_slide_text_color = "#000000",
   header_font_google = google_font("Roboto", "400"),
   text_font_google   = google_font("Nunito", "400", "400i"),
   code_font_google   = google_font("IBM Plex Mono"), 
   inverse_header_color = '#ffffff', inverse_text_color = "#ffffff", inverse_text_shadow = T, inverse_background_color = color1,
-  # link_color = "#ccedf0", 
+  title_slide_background_image = "figs/riococaSWIR_BW.jpg",
+  title_slide_background_position = c("0%", "0%"),
+  # link_color = "#ccedf0",
   extra_css = list(
     ".pull-left-70" = list("float" = "left", "width" = "65.8%"),
     ".pull-right-30" = list("float" = "right", "width" = "28.2%"),
@@ -51,47 +53,62 @@ style_duo_accent(
     ".title-slide h2" = list("font-size" = "140%"),
     ".title-slide h3" = list("font-size" = "100%"),
     ".opacity" = list("opacity" = "0.2"),
-    ".content-box-grey" = list("box-sizing" = "content-box", "padding" = "10px", "background-color" = "rgba(236, 236, 236, 0.2)")
+    ".content-box-grey" = list("box-sizing" = "content-box", "padding" = "10px", "background-color" = "rgba(236, 236, 236, 0.4)")
   )
 )
 ```
 
----
-
 ```{r deathrate, echo = F, message = F, warning = F, fig.cap = "Índice de mortalidad anual (por cada 100 mil habitantes) por década a causa de catastrofes naturales, 1900'2015"}
 library(tidyr)
 library(dplyr)
-disasters = tibble(
-  decade = seq(1900, 2010, 10),
-  `Sequías` = c(7.65,0.47,24.2,0,14.58,0,4.54,0.29,1.15,0.01,0,0.05),
-  `Terremotos` = c(1.02,0.35,2.81,1.08,0.68,0.08,0.16,1.08,0.12,0.18,0.7,0.61),
-  `Temperaturas Extremas` = c(0,0,0,0.01,0,0.01,0,0,0.01,0.02,0.14,0.16),
-  `Inundaciones` = c(0,0.56,0.02,19.85,0.43,7.46,0.1,0.13,0.11,0.17,0.08,0.08),
-  `Deslizamientos` = c(0,0,0,0,0.07,0.01,0.02,0.02,0.01,0.01,0.01,0.02),
-  `Tormentas` = c(0.11,0.33,0.61,0.43,0.54,0.11,0.4,0.88,0.1,0.37,0.26,0.04),
-  `Actividad Volcánica` = c(0.26,0.04,0.03,0.01,0.01,0.02,0.01,0,0.05,0,0,0)
-) %>% pivot_longer(-decade, names_to = "hazard", values_to = "death_rate") 
+disasters = read.csv('data/number-of-natural-disaster-events.csv')
+names(disasters) = c('entity', 'year', 'number')
+
+disasters_wrangle = disasters %>% 
+  filter(entity != "Impact") %>% 
+  pivot_wider(names_from = entity, values_from = number) %>% 
+  rowwise() %>% 
+  mutate(Landslides = sum(Landslide,`Mass movement (dry)`, na.rm = T)) %>% 
+  select(-Landslide, -`Mass movement (dry)`) %>% 
+  rename(
+    "Acumulado" = `All natural disasters`, 
+    "Sequía" = Drought,
+    "Terremoto" = Earthquake,
+    "Temp. extrema" = `Extreme temperature`,
+    "Clima extremo" = `Extreme weather`,
+    "Inundaciones" = Flood,
+    "Deslizamientos" = Landslides, 
+    "Actividad volcánica" = `Volcanic activity`,
+    "Incendios" = Wildfire
+  ) %>% 
+  pivot_longer(-year, names_to = 'entity', values_to = 'number') %>% 
+  arrange(year, entity)
 
 library(ggplot2)
 library(gganimate)
-g = ggplot(disasters, aes(y = death_rate, x = hazard)) +
-  geom_col(aes(fill = hazard), show.legend = F) +
-  # scale_y_continuous(breaks = 1:7, labels = unique(disasters$hazard)) +
-  transition_manual(decade) +
-  scico::scale_fill_scico_d() + 
-  coord_flip() +
-  # view_follow(fixed_x = T) +
-  # scale_y_log10() +
-  # facet_wrap(~decade) +
+g = ggplot(disasters_wrangle, aes(y = number, x = year)) +
+  geom_area(
+    data = disasters_wrangle %>% filter(entity == "Acumulado"),
+    aes(color = entity), fill = 'grey70', alpha = 0.3, color = NA
+  ) +
+  geom_line(
+    data = disasters_wrangle %>% filter(entity != "Acumulado"), 
+    aes(color = entity), size = 0.75, show.legend = T
+  ) +
+  
+  scale_x_continuous(limits = c(1900,2021), expand = c(0,0), n.breaks = 13) +
+  ggthemes::scale_color_colorblind("") + 
+  transition_reveal(year) +
+  view_follow(fixed_x = T) +
   labs(
-    title = "Índice de mortalidad anual por peligors naturales, 1900-2015",
-    subtitle = 'Década: {current_frame}', 
-    caption = "Gráfico modificado de ourworldindata.org. Fuente: EMDAT (2017) OFDA/CRED International Disaster Database.",
-    x = '', y = 'Índice de mortalidad (c/100 mil hab.)') +
+    title = "Peligros naturales",
+    subtitle = "No. de eventos desde 1900 al 2019",
+    caption = "Gráfico modificado de ourworldindata.org.\nFuente: EMDAT (2020): OFDA/CRED International Disaster Database,\nUniversité catholique de Louvain – Brussels – Belgium",
+    x = '', y = '') +
   theme_xaringan()
 ```
 
-```{r, echo = F, fig.align = 'center', fig.width = 15, fig.height = 8, warning= F, message = F}
+```{r, cache = T, echo = F, fig.align = 'center', fig.width = 15, fig.height = 8, warning= F, message = F, gganimate = list(duration = 20, start_pause = 5, end_pause = 50)}
 g
 ```
 
@@ -128,13 +145,153 @@ class: center
 **"Los peligros naturales son inevitables, el impacto que tienen en la sociedad no lo es."**
 
 ---
-class: left bottom
+class: left top
 background-image: url(figs/geoscience_for_the_future_spa.png)
 background-position: 100% 0%
 background-size: contain
 
+### ¿Qué <br> podemos <br> hacer?
 
 .note[Fuente: [The Geological Society](https://www.geolsoc.org.uk/Posters)]
+
+---
+class: center, middle, inverse
+background-image: url(https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9)
+background-size: cover
+
+.left[.note[Foto: [unsplash.com](https://unsplash.com/)]]
+
+## Sistemas de información geográfica y percepción remota
+
+--
+### ó
+
+## Tecnologías geoespaciales
+
+
+---
+class: top, center
+background-image: url(https://pixnio.com/free-images/2019/11/28/2019-11-28-14-04-21-1200x800.jpg)
+background-size: cover
+
+.left[.note[Foto: Photo by <a href="https://pixnio.com/media/geography-location-map-paper-document"> Bicanski</a> on <a href="https://pixnio.com/">Pixnio</a>]]
+
+### ¿Cuál es su rol?
+
+--
+
+Manejo de bases de datos geoespaciales
+
+--
+
+Análisis de datos
+
+--
+
+Planificación del territorio y recursos
+
+--
+
+Herramientas para toma de decisiones 
+
+---
+class: middle, center
+background-image: url(figs/landslides.jpg)
+background-size: cover
+
+.left[.note[Foto: Distribución global de deslizamientos. Datos de [Froude and Petley (2018).](https://nhess.copernicus.org/articles/18/2161/2018/)]]
+
+## Datos geoespaciales
+
+--
+
+### `r anicon::faa('exclamation', animate = 'bounce', ltext = 'Big Data  ')`
+
+--
+
+.left[
+.pull-left[
+
+### Datos vectoriales
+
+- Inventario de eventos (puntos, polígonos)
+  - Inventarios oficiales
+  - Crowdsourcing (colaboración masiva voluntaria)
+- Información auxiliar: 
+    - Uso de suelo / cobertura de suelo
+    - Geología
+    - Información hidrológica
+]]
+
+--
+
+.left[
+.pull-right[
+
+### Datos raster
+
+- Imágenes satelitales
+  - Landsat, Sentinel, PlanetScope, RapidEye
+  - Sensores ópticos, radar, espectrómetros, mediciones atmosféricas
+- Fotografías aéreas (UAV)
+- LiDaR
+- Modelos digitales de elevación (DEM)
+]]
+
+---
+class: center, middle
+
+## Herramientas y tecnologías
+
+--
+
+.pull-left[
+
+### Software proprietario
+
+![:scale 50%](https://upload.wikimedia.org/wikipedia/de/thumb/4/46/ESRI_Logo.svg/2000px-ESRI_Logo.svg.png)
+
+![:scale 60%](https://www.csdsinc.com/wp-content/uploads/2018/10/ecog.jpg)
+
+]
+
+--
+
+.pull-right[
+
+### Software abierto
+
+![:scale 15%](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/1280px-R_logo.svg.png)
+
+![:scale 15%](https://seeklogo.com/images/P/python-logo-C50EED1930-seeklogo.com.png)
+![:scale 15%](https://earthengine.google.com/static/images/earth-engine-logo.png)
+![:scale 15%](https://sentinels.copernicus.eu/subb/image/journal/article?img_id=62306&t=1596610285464)
+
+![:scale 20%](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/QGIS_logo%2C_2017.svg/2000px-QGIS_logo%2C_2017.svg.png)
+]
+
+--
+
+El uso de software abierto fomenta la **investigación reproducible**!
+
+---
+class: center, middle, inverse
+background-image: url(figs/obia.jpg)
+background-size: cover
+
+## Aplicaciones
+
+`r anicon::faa('map', animate = 'pulse', rtext = "  Mapeo y monitoreo de peligros naturales")` 
+
+`r anicon::faa('search', animate = 'pulse', rtext = "  Análisis de vulnerabilidad y riesgos")` 
+
+...
+
+--
+
+### Proyectos de investigación
+
+Enfoque en deslizamientos de tierra y peligros asociados
 
 ---
 class: inverse, left, top
@@ -211,6 +368,7 @@ Para participar sigan los pasos [**aquí**](http://citizenmorph.sbg.ac.at/mitmac
 ]
 --
 .pull-right-70[
+.center[
 
 &nbsp;
 
@@ -219,7 +377,7 @@ Para participar sigan los pasos [**aquí**](http://citizenmorph.sbg.ac.at/mitmac
 &nbsp;
 
 <iframe width="500" height="400" frameborder="0" seamless src="https://p3d.in/e/XzOH7+load"></iframe>
-]
+]]
 
 ---
 class: inverse, left, top
@@ -291,15 +449,36 @@ Monitoreo de eventos extremos y su interacción con sistemas hídricos
 ]
 
 ---
-class: inverse, left, top
+class: inverse, right, top
 background-image: url(figs/nz_earthflow.jpg)
 background-size: cover
 
+## [STEC](https://www.landcareresearch.co.nz/discover-our-research/land/erosion-and-sediment/smarter-targeting-of-erosion-control/)
+### Smarter Targeting of Erosion Control 
+
+.left[.note[Foto: Lorena Abad Crespo]]
+
+.pull-right[
+.content-box-grey[
+Patrones espacio-temporales de erosión
+
+Calidad de agua (sedimentos)
+
+Mitigación de erosión y sedimentos (aspectos ambientales y económicos)
+
+Área de estudio: Nueva Zelanda
+]
+
+]
+
 ---
 
-class: center, middle
+class: center, middle, inverse
+background-image: url(figs/riococaTC.jpg)
+background-position: 0% 0%
+background-size: cover
 
-# Gracias por su atención.
+# ¡Gracias por su atención!
 
 ¿Preguntas? 
 
@@ -310,3 +489,5 @@ Contacto:
 `r anicon::faa("twitter", color = color2, animate="wrench", anitype="parent-hover",rtext = "    [**@loreabad6**](https://twitter.com/loreabad6)") `
 
 .left[.footnote[Diapositivas creadas con los paquetes [**xaringan**](https://github.com/yihui/xaringan) y [**xaringanthemer**](https://github.com/gadenbuie/xaringanthemer) de R.]]
+
+.note[Foto: Sentinel-2, RGB: B4-B3-B2, 24/08/2020]

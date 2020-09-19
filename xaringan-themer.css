@@ -52,7 +52,7 @@
   --inverse-background-color: #278086;
   --inverse-header-color: #ffffff;
   --title-slide-background-color: #278086;
-  --title-slide-text-color: #ffffff;
+  --title-slide-text-color: #000000;
   --header-background-color: #278086;
   --header-background-text-color: #FFFFFF;
   --primary: #278086;
@@ -133,6 +133,10 @@ a, a > code {
 }
 .title-slide {
   background-color: var(--title-slide-background-color);
+  background-image: url("figs/riococaSWIR_BW.jpg");
+  background-size: cover;
+  background-position: 0%,0%;
+  background-position: 0%,0%;
 }
 .title-slide .remark-slide-number {
   display: none;
@@ -327,5 +331,5 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 .content-box-grey {
   box-sizing: content-box;
   padding: 10px;
-  background-color: rgba(236, 236, 236, 0.2);
+  background-color: rgba(236, 236, 236, 0.4);
 }

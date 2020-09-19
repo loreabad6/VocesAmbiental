@@ -25,5 +25,5 @@ peligros naturales*
   - ¿Tienes preguntas, comentarios, dudas sobre los temas de la charla?
     Abre un [issue
     aquí](https://github.com/loreabad6/VocesAmbiental/issues).
-
-### Recursos adicionales:
+  - ¿Sin GitHub? Envíame un correo a
+    <lorenacristina.abadcrespo@sbg.ac.at>
