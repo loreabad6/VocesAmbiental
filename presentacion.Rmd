@@ -58,7 +58,7 @@ style_duo_accent(
 )
 ```
 
-```{r deathrate, echo = F, message = F, warning = F, fig.cap = "Índice de mortalidad anual (por cada 100 mil habitantes) por década a causa de catastrofes naturales, 1900'2015"}
+```{r deathrate, echo = F, message = F, warning = F}
 library(tidyr)
 library(dplyr)
 disasters = read.csv('data/number-of-natural-disaster-events.csv')
@@ -366,18 +366,6 @@ Para participar sigan los pasos [**aquí**](http://citizenmorph.sbg.ac.at/mitmac
 .note[Foto: Lorena Abad Crespo]
 
 ]
---
-.pull-right-70[
-.center[
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
-<iframe width="500" height="400" frameborder="0" seamless src="https://p3d.in/e/XzOH7+load"></iframe>
-]]
 
 ---
 class: inverse, left, top
