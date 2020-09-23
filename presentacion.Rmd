@@ -279,6 +279,8 @@ class: center, middle, inverse
 background-image: url(figs/obia.jpg)
 background-size: cover
 
+.note[Foto: Daniel Hölbling] 
+
 ## Análisis de datos
 
 Digitalización
@@ -289,6 +291,8 @@ Clasificación automática de imágenes
 class: center, middle, inverse
 background-image: url(figs/obia.jpg)
 background-size: cover
+
+.note[Foto: Daniel Hölbling]
 
 ## Aplicaciones
 
@@ -488,6 +492,6 @@ Contacto:
 `r anicon::faa("twitter", color = color2, animate="wrench", anitype="parent-hover",rtext = "    [**@loreabad6**](https://twitter.com/loreabad6)") `
 
 .left[.footnote[Diapositivas creadas con los paquetes [**xaringan**](https://github.com/yihui/xaringan) y [**xaringanthemer**](https://github.com/gadenbuie/xaringanthemer) de R. <br>
-Repositorio de la presentación: [aquí](https://github.com/loreabad6/VocesAmbiental/)]
+Repositorio de la presentación: [aquí](https://github.com/loreabad6/VocesAmbiental/)]]
 
-.note[Foto: Sentinel-2, RGB: B4-B3-B2, 24/08/2020]
+.note[Foto: Erosión regresiva Río Coca,<br>Sentinel-2, RGB: B4-B3-B2, 24/08/2020]
