@@ -18,6 +18,8 @@ peligros naturales*
 
 ### Presentación:
 
+  - Para ver la grabación de la presentación, haz [click
+    aquí](https://www.facebook.com/watch/?v=327432258323373&extid=MZJv41PQtCQ5l6jT).
   - Para acceder a la presentación, haz [click
     aquí](https://loreabad6.github.io/VocesAmbiental/presentacion.html).
   - Para acceder al código fuente de la presentación, haz [click
